@@ -11,7 +11,7 @@ body {
 	background-attachment: fixed;
 	background-position: absolute;
 	/*background-color: #eee;*/
-	background-image: url('./img/swirl.png');
+	background-image: url('../img/swirl.png');
 	margin-bottom: 60px;
 }
 
