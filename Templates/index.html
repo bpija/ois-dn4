@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+		<link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<link href="../static/css/custom.css" rel ="stylesheet" type="text/css" media="screen"/> 
+		<script>$(document).ready(function () {
+			$("#sel1").change(function() {
+				var link = "domov.html?id=" + $(this).val();
+				$("#link").attr("href", link);
+			});
+		})</script>
+		<title>EHR</title>
+	</head>
+	<body id="index">
+		<div class="container">
+			<form class="form-signin" role="form">
+			<div id="rod"><img src="../static/img/rod.png"/></div>
+			<h2 class="form-signin-heading">EHR - Electronic Health Record</h2>
+			<div class="form-group">
+          
+			<div class="dropdown">
+	  			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" style="width: 100%">
+	    			Izberite pacienta
+	    		<span class="caret"></span>
+  				</button>
+			  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width: 100%">
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="domov.html?=test1">Ana Novak</a></li>
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="domov.html?=test2">Janez Novak</a></li>
+			    <li role="presentation"><a role="menuitem" tabindex="-1" href="domov.html?=test3">Jan Medved</a></li>
+			  </ul>
+			</div>
+          <!--label for="sel1" id="l1">Izberite pacienta</label>
+          <select class="form-control" id="sel1">
+            <option value="test1">Ana Novak</option>
+            <option value="test2">Janez Novak</option>
+            <option value="test3">Jan Medved</option>
+          </select-->
+			<label for="inputPassword" class="sr-only">Geslo</label>
+			<input type="password" id="inputPassword" class="form-control" placeholder="Geslo" required/>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" value="remember-me">
+						Zapomni si me
+				</label>
+			</div>
+			<button id="prijava" class="btn btn-lg btn-primary btn-block" type="submit"><a id="link" href="domov.html?id=test1">Prijava</a></button>
+		</div>
+	</body>
+</html>
