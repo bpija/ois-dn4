@@ -81,7 +81,10 @@ function preberiEHRodBolnika() {
 			type: 'GET',
 			headers: {"Ehr-Session": sessionId},
 	    	success: function (data) {
-				$("#imePacienta").text(data.party.firstNames + " " + data.party.lastNames);
+	    		if (data.party.gender === "FEMALE")
+					$("#imePacienta2").text(data.party.firstNames + " " + data.party.lastNames);
+				else
+					$("#imePacienta1").text(data.party.firstNames + " " + data.party.lastNames);
 				$("#datumRojstva").text(moment(data.party.dateOfBirth).format("D.M.YYYY"));
 				$("#starost").text(Math.floor(moment.duration(moment().diff(data.party.dateOfBirth)).asYears()));
 				$("#spol").text(data.party.gender === "FEMALE" ? "Ženski" : "Moški");
@@ -114,7 +117,7 @@ function dodajMeritveVitalnihZnakov(datumInUra, telesnaVisina, telesnaTeza, tele
 		    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
 		    "vital_signs/blood_pressure/any_event/systolic": sistolicniKrvniTlak,
 		    "vital_signs/blood_pressure/any_event/diastolic": diastolicniKrvniTlak,
-		    "vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom
+		    "vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom,
 		};
 		var parametriZahteve = {
 		    "ehrId": ehrId,
@@ -312,7 +315,7 @@ function preberiMeritveVitalnihZnakov(tip) {
 
 								    return chart;
 								  });
-						    }
+						    } 
 					    },
 					    error: function(err) {
 							console.log(JSON.parse(err.responseText).userMessage);
@@ -328,6 +331,9 @@ function preberiMeritveVitalnihZnakov(tip) {
 }
 
 	var urlID = getParameterByName("id");
+	localStorage.removeItem("test1");
+	localStorage.removeItem("test2");
+	localStorage.removeItem("test3");
 	
 	function narediBolnika(urlID) {
 		if (localStorage.getItem("test1") != null) {
@@ -353,10 +359,18 @@ function preberiMeritveVitalnihZnakov(tip) {
 							datum: [new Date(1985, 6, 2, 15, 33, 4), new Date(1989, 4, 11, 12, 11, 3), new Date(1993, 2, 3, 11, 10, 43), new Date(1995, 5, 12, 13, 23, 34), new Date(1998, 9, 23, 14, 35, 35), new Date(2003, 10, 14, 10, 24, 51), new Date(2005, 5, 11, 11, 16, 28), new Date(2008, 10, 24, 13, 5, 45), new Date(2011, 9, 3, 14, 23, 3), new Date(2013, 2, 4, 9, 15, 22)],
 							temperatura: [36.6, 36.7, 37.8, 36.6, 38.9, 36.7, 36.6, 38.5, 38.7, 36.6],
 							nasicenostKrvi: [96.8, 98.2, 95.7, 99.3, 94.7, 98.4, 97.8, 96.1, 96.9, 99.7],
-							merilec: ["Tanja Recek", "Marjeta Gorišek", "Tanja Recek", "Tanja Recek", "Marjeta Gorišek", "Tanja Recek", "Tanja Recek", "Tanja Recek", "Marjeta Gorišek", "Tanja Recek"]
+							merilec: ["Tanja Recek", "Marjeta Gorišek", "Tanja Recek", "Tanja Recek", "Marjeta Gorišek", "Tanja Recek", "Tanja Recek", "Tanja Recek", "Marjeta Gorišek", "Tanja Recek"],
 						};
 
 			kreirajEHRzaBolnika("Ana", "Novak", new Date(1972, 10, 6), "FEMALE");
+			$("#ks").text("A");
+			$("#allergy").text("Cvetni prah, Dišave");
+			$("#b1").text("Norice");
+			$("#b2").text("Rdečke");
+			$("#b3").text("Mononukleoza");
+			$("#z1").text("Lekadol");
+			$("#z2").text("Naprosyn");
+			$("#z3").text("Septolete");
 			localStorage.setItem("test1", ehrId);
 
 			for (var i = 0; i < t1.teza.length; i++) {
@@ -366,12 +380,56 @@ function preberiMeritveVitalnihZnakov(tip) {
 	
 		}
 		else if (urlID === "test2") {
+			var t2 = {teza: [80.3, 85.6, 87.9, 85.4, 86.3, 82.2, 77.8, 76.9, 76.2, 74.1],
+					visina: [181, 181, 180, 181, 181, 180, 180, 181, 180, 180],
+					sTlak: [120, 122, 130, 135, 140, 140, 150, 145, 144, 142],
+					dTlak: [70, 72, 68, 70, 75, 82, 80, 90, 75, 78],
+					datum: [new Date(2000, 4, 7, 9, 0, 2), new Date(2001, 7, 7, 11, 30, 14), new Date(2002, 7, 12, 9, 15, 35), new Date(2003, 7, 17, 9, 6, 22), new Date(2004, 3, 2, 15, 25, 7), new Date(2004, 9, 5, 9, 4, 58), new Date(2005, 1, 11, 10, 1, 42), new Date(2005, 4, 5, 10, 30, 27), new Date(2005, 9, 3, 9, 30, 51), new Date(2006, 1, 8, 9, 45, 37)],
+					temperatura: [36.8, 36.6, 38.0, 36.9, 36.7, 37.1, 37.3, 37.4, 37.0, 36.9],
+					nasicenostKrvi: [99.6, 98.5, 98.3, 99.3, 99.0, 98.5, 97.9, 97.7, 98.7, 98.0],
+					merilec: ["Barbara Vidic", "Barbara Vidic", "Barbara Vidic", "Monika Zalokar", "Barbara Vidic", "Barbara Vidic", "Monika Zalokar", "Barbara Vidic", "Barbara Vidic", "Barbara Vidic"]
+			};
+
 			kreirajEHRzaBolnika("Janez", "Novak", new Date(1956, 6, 23), "MALE");
+			$("#ks").text("B");
+			$("#allergy").text("Penicilin, oreščki");
+			$("#b1").text("Norice");
+			$("#b2").text("Angina");
+			$("#b3").text("Viroza");
+			$("#z1").text("Lekadol");
+			$("#z2").text("Septolete");
+			$("#z3").text("Aspirin");
 			localStorage.setItem("test2", ehrId);
+
+			for (var i = 0; i < t2.teza.length; i++) {
+				dodajMeritveVitalnihZnakov(t2.datum[i], t2.visina[i], t2.teza[i], t2.temperatura[i], t2.sTlak[i], t2.dTlak[i], t2.nasicenostKrvi[i], t2.merilec[i]);
+			}
 		}
 		else if (urlID === "test3") {
+			var t3 = {teza: [6, 8, 10, 13, 16, 17, 20, 22, 25, 28],
+					visina: [51.5, 52.2, 53.5, 56.5, 58.4, 59.4, 59.6, 60.0, 62.2, 66.5],
+					sTlak: [80, 81, 85, 88, 91, 94, 95, 94, 96, 99],
+					dTlak: [34, 35, 38, 40, 42, 46, 46, 48, 48, 48],
+					datum: [new Date(2007, 1, 6, 15, 1, 24), new Date(2007, 7, 8, 14, 30, 31), new Date(2007, 9, 2, 14, 15, 11), new Date(2008, 4, 17, 15, 24, 44), new Date(2008, 7, 12, 14, 18, 47), new Date(2008, 9, 29, 15, 37, 59), new Date(2009, 10, 20, 14, 22, 38), new Date(2009, 12, 15, 14, 33, 17), new Date(2010, 9, 6, 10, 31, 25), new Date(2012, 4, 8, 9, 45, 37)],
+					temperatura: [37.5, 38.3, 38.5, 38.0, 37.3, 36.8, 36.9, 36.6, 36.9, 37.0],
+					nasicenostKrvi: [99.5, 99.3, 97.5, 98.2, 97.5, 98.6, 99.2, 99.0, 98.6, 97.9],
+					merilec: ["Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar", "Breda Ravnikar"]
+			};
+
 			kreirajEHRzaBolnika("Jan", "Medved", new Date(2007, 5, 18), "MALE");
+			$("#ks").text("AB");
+			$("#allergy").text("Mleko");
+			$("#b1").text("Norice");
+			$("#b2").text("Angina");
+			$("#b3").text("Viroza");
+			$("#z1").text("Lekadol");
+			$("#z2").text("Ospen");
+			$("#z3").text("Aspirin");
 			localStorage.setItem("test3", ehrId);
+
+			for (var i = 0; i < t3.teza.length; i++) {
+				dodajMeritveVitalnihZnakov(t3.datum[i], t3.visina[i], t3.teza[i], t3.temperatura[i], t3.sTlak[i], t3.dTlak[i], t3.nasicenostKrvi[i], t3.merilec[i]);
+			}
 		}
 	}
 	

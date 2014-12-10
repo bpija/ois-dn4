@@ -3,15 +3,16 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">	
-		<link href="./static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link href="./Static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="./Static/bootstrap/js/bootstrap.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.js"></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.1.15-beta/nv.d3.min.css" rel="stylesheet"></script>
-		<link href="./static/css/custom.css" rel ="stylesheet" type="text/css" media="screen"/> 
-		<script src="./static/js/demo.js"></script>
-		<script src="./static/js/podatki.js"></script>
+		<link href="./Static/css/custom.css" rel ="stylesheet" type="text/css" media="screen"/> 
+		<script src="./Static/js/demo.js"></script>
+		<script src="./Static/js/podatki.js"></script>
 		<title>EHR</title>
 	</head>
 	<body id="domov">
@@ -35,10 +36,13 @@
 			    <h3 class="panel-title">Osnovni Podatki</h3>
 			  </div>
 			  <div class="panel-body">
-			    <p style="font-size:20px; color: #339bb7" id="imePacienta"></p>
+			    <p style="font-size:20px; color: #339bb7" id="imePacienta1"></p>
+			    <p style="font-size:20px; color: #b7337a" id="imePacienta2"></p>
+			    <br>
 			    <p style="color:rgb(119, 119, 119)">Datum rojstva: <font id="datumRojstva"style="color:#000; font-weight:bold"></font></p>
 			    <p style="color:rgb(119, 119, 119)">Starost: <font id="starost" style="color:#000; font-weight:bold"></font></p>
 			    <p style="color:rgb(119, 119, 119)">Spol: <font id="spol" style="color:#000; font-weight:bold"></font></p>
+			    <p style="color:rgb(119, 119, 119)">Krvna skupina: <font id="ks" style="color:#000; font-weight:bold"></font></p>
 			  </div>
 			</div>
 		</div>
@@ -99,8 +103,65 @@
 			  	</div>
 			</div>
 		</div>
+
+		<div class="clearfix"></div><br/><br/>
+	  	<div class="col-md-offset-2 col-md-8">			
+	  	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="panel panel-info">
+		    <div class="panel-heading" role="tab" id="headingOne">
+		      <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+		          Alergije
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		      <div class="panel-body">
+		        <p style="color:rgb(119, 119, 119)" id="allergy"></p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="panel panel-info">
+		    <div class="panel-heading" role="tab" id="headingTwo">
+		      <h4 class="panel-title">
+		        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		          Prebolele bolezni
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+		      <div class="panel-body">
+		        <ul style="color:rgb(119, 119, 119)">
+		        	<li id="b1"></li>
+		        	<li id="b2"></li>
+		        	<li id="b3"></li>
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="panel panel-info">
+		    <div class="panel-heading" role="tab" id="headingThree">
+		      <h4 class="panel-title">
+		        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+		          Predpisana zdravila
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+		      <div class="panel-body">
+		        <ul style="color:rgb(119, 119, 119)">
+		        	<li id="z1"></li>
+		        	<li id="z2"></li>
+		        	<li id="z3"></li>
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
+	
 	<div class="clearfix"></div><br/><br/>
+		
 		<footer class="footer">
 			<div class="container">
 				<p class="text-muted">Copyright © 2014 EHR. Vse pravice pridržane.</p>
