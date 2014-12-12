@@ -331,6 +331,10 @@ function preberiMeritveVitalnihZnakov(tip) {
 }
 
 	var urlID = getParameterByName("id");
+	$(".link2").each(function() {
+		$(this).attr("href", $(this).attr("href") + "?id=" + urlID); 
+	});
+	
 	localStorage.removeItem("test1");
 	localStorage.removeItem("test2");
 	localStorage.removeItem("test3");
@@ -365,12 +369,22 @@ function preberiMeritveVitalnihZnakov(tip) {
 			kreirajEHRzaBolnika("Ana", "Novak", new Date(1972, 10, 6), "FEMALE");
 			$("#ks").text("A");
 			$("#allergy").text("Cvetni prah, Dišave");
-			$("#b1").text("Norice");
-			$("#b2").text("Rdečke");
-			$("#b3").text("Mononukleoza");
+			$("#b1").text("Sladkorna bolezen (diabetes)");
+			$("#b2").text("Norice");
+			$("#b3").text("Rdečke");
+			$("#b4").text("Mononukleoza");
 			$("#z1").text("Lekadol");
 			$("#z2").text("Naprosyn");
 			$("#z3").text("Septolete");
+			$("#navodila1").text("Če imate sladkorno bolezen tipa 1, vam lahko zdravnik priporoča merjenje glukoze 3-krat dnevno pred obroki in po določenih obrokih, pred telesno dejavnostjo in po njej ter pred spanjem. Morda pa potrebujete izvajanje meritev še pogosteje, če ste npr. bolni ali če spremenite dnevni ritem zdravljenja ali jemanja zdravil.");
+			$("#navodila2").text("Če vodite vašo sladkorno bolezen tipa 2 samo z dieto in s telesno dejavnostjo, lahko potrebujete meritev glukoze v krvi le enkrat dnevno. Če prejemate tablete, torej če se zdravite z inzulinom ali s čim drugim za vodenje sladkorne bolezni tipa 2, vam lahko zdravnik priporoča še pogostejša merjenja glukoze.");
+			$("#navodila0").text("Pravilna izvedba meritve glukoze v krvi");
+			var besedilo = ["1. Temeljito umijemo roke", "2. Roke dobro osušimo", "3. S prožilno napravo se zbodemo in oblikujemo kapljico krvi", " 4. Prvo kapljico krvi obrišemo s čistim zložencem", "5. Ponovno oblikujemo kapljico krvi", "6. V kapljico pomočimo konico testnega lističa in počakamo, da merilnik zapiska", "7. Kapljico krvi obrišemo z zložencem in počakamo na rezultat meritve"]
+			for (var i = 0; i < besedilo.length; i++) {
+				$("#navodila3").append(besedilo[i] + "<br/>");
+			}
+
+
 			localStorage.setItem("test1", ehrId);
 
 			for (var i = 0; i < t1.teza.length; i++) {
@@ -393,12 +407,16 @@ function preberiMeritveVitalnihZnakov(tip) {
 			kreirajEHRzaBolnika("Janez", "Novak", new Date(1956, 6, 23), "MALE");
 			$("#ks").text("B");
 			$("#allergy").text("Penicilin, oreščki");
-			$("#b1").text("Norice");
-			$("#b2").text("Angina");
-			$("#b3").text("Viroza");
+			$("#b1").text("Hipertenzija");
+			$("#b2").text("Norice");
+			$("#b3").text("Angina");
+			$("#b4").text("Viroza");
 			$("#z1").text("Lekadol");
 			$("#z2").text("Septolete");
 			$("#z3").text("Aspirin");
+			$("#navodila1").text("");
+			$("#navodila2").text("");
+			$("#navodila0").text("");
 			localStorage.setItem("test2", ehrId);
 
 			for (var i = 0; i < t2.teza.length; i++) {
@@ -422,6 +440,8 @@ function preberiMeritveVitalnihZnakov(tip) {
 			$("#b1").text("Norice");
 			$("#b2").text("Angina");
 			$("#b3").text("Viroza");
+			$("#b4").text("Slabovidnost");
+			$("#b5").text("Prekomerna telesna teža");
 			$("#z1").text("Lekadol");
 			$("#z2").text("Ospen");
 			$("#z3").text("Aspirin");
