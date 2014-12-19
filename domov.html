@@ -8,10 +8,10 @@
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="./Static/bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<!--script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script-->
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 		<script type="text/javascript" src="./Static/js/json.js"></script>
-		<script src="./Static/js/map.js"></script>
+		<!--script src="./Static/js/map.js"></script-->
 		<script src="./Static/js/search.js"></script>
 		<script src="./Static/bootstrap/js/moment.js"></script>
 		<script src="./Static/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
@@ -45,10 +45,9 @@
 			    <h3 class="panel-title">Osnovni Podatki</h3>
 			  </div>
 			  <div class="panel-body">
-			    <p style="font-size:20px; color: #339bb7" id="imePacienta1"></p>
-			    <p style="font-size:20px; color: #b7337a" id="imePacienta2"></p>
-			    <br>
-			    <p style="color:rgb(119, 119, 119)">Datum rojstva: <font id="datumRojstva"style="color:#000; font-weight:bold"></font></p>
+			  	<div id="ime" style="margin-top: 10px; margin-bottom: 20px">
+			  	</div>
+			    <p style="color:rgb(119, 119, 119)">Datum rojstva: <font id="datumRojstva" style="color:#000; font-weight:bold"></font></p>
 			    <p style="color:rgb(119, 119, 119)">Starost: <font id="starost" style="color:#000; font-weight:bold"></font></p>
 			    <p style="color:rgb(119, 119, 119)">Spol: <font id="spol" style="color:#000; font-weight:bold"></font></p>
 			    <p style="color:rgb(119, 119, 119)">Krvna skupina: <font id="ks" style="color:#000; font-weight:bold"></font></p>
@@ -83,7 +82,7 @@
 		<div class="col-md-offset-2 col-md-4">
 			<div class="panel panel-info">
   				<div class="panel-heading">
-    				<h3 class="panel-title">Tlak</h3>
+    				<h3 class="panel-title">Tlak<div class="pull-right" id="tlak"></div></h3>
   				</div>
 	  			<div class="panel-body">
 	  				<svg style="height: 450px" class="col-md-12" id="blood_pressure"></svg>

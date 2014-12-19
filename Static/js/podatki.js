@@ -1,3 +1,35 @@
+function uspesno() {
+	var datum = $("#datetimepicker1 input").val();
+	var vrednost = $("#vrednost").val();
+ 
+	if (datum == "" || vrednost == "") {
+		$("#label").html("");
+		$("#label").append('<span class="label label-danger" id="izpis" style="padding: 5px"></span>');
+		$("#izpis").text("Izpolnite obvezna polja.");
+		return;
+	}
+
+ 	if(isNaN(vrednost) == true) {
+ 		$("#label").html("");
+		$("#label").append('<span class="label label-warning" id="izpis" style="padding: 5px"></span>');
+		$("#izpis").text("V polje za meritev vnesite samo število opravljene meritve.");
+ 	}
+
+ 	var datumReg = datum.match(/([0-9][0-9]\/)+[0-9]{4} [0-9]:[0-9]{2} ((PM)|(AM))/g);
+
+ 	if (datumReg != datum) {
+ 		$("#label").html("");
+		$("#label").append('<span class="label label-warning" id="izpis" style="padding: 5px"></span>');
+		$("#izpis").text("Datum izberite iz izbirnega polja.");
+ 		return;
+ 	}
+
+	$("#label").html("");
+	$("#label").append('<span class="label label-success" id="izpis" style="padding: 5px"></span>');
+	$("#izpis").text("Uspešno ste vnesli vrednost " + vrednost + " za dan " + datum.toString());
+	
+}
+
 $(document).ready(function() {
 	
 	var baseUrl = 'https://rest.ehrscape.com/rest/v1';
@@ -81,10 +113,15 @@ function preberiEHRodBolnika() {
 			type: 'GET',
 			headers: {"Ehr-Session": sessionId},
 	    	success: function (data) {
-	    		if (data.party.gender === "FEMALE")
-					$("#imePacienta2").text(data.party.firstNames + " " + data.party.lastNames);
-				else
-					$("#imePacienta1").text(data.party.firstNames + " " + data.party.lastNames);
+	    		if (data.party.gender === "FEMALE"){
+	    			$("#ime").html("");
+	    			$("#ime").append('<p style="font-size:20px; color: #b7337a" id="imePacienta"></p>');
+	    			$("#imePacienta").text(data.party.firstNames + " " + data.party.lastNames);
+	    		} else {
+	    			$("#ime").html("");
+	    			$("#ime").append('<p style="font-size:20px; color: #339bb7" id="imePacienta"></p>');
+					$("#imePacienta").text(data.party.firstNames + " " + data.party.lastNames);
+	    		}
 				$("#datumRojstva").text(moment(data.party.dateOfBirth).format("D.M.YYYY"));
 				$("#starost").text(Math.floor(moment.duration(moment().diff(data.party.dateOfBirth)).asYears()));
 				$("#spol").text(data.party.gender === "FEMALE" ? "Ženski" : "Moški");
@@ -232,27 +269,57 @@ function preberiMeritveVitalnihZnakov(tip) {
 				    				data2.push({x: moment(res[i].time).format("D.M.YYYY"), y: res[i].diastolic});
 				    			}
 
-								  nv.addGraph(function() {
-								    var chart = nv.models.multiBarHorizontalChart()
-								        .x(function(d) { return d.x })
-								        .y(function(d) { return d.y })
-								        .margin({top: 30, right: 25, bottom: 50, left: 65})
-								        .showValues(false)           //Show bar value next to each bar.
-								        .tooltips(true)             //Show tooltips on hover.
-								        .transitionDuration(350)
-								        .showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
+				    			var AQL = 
+									"select "+
+									    "bp/data[at0001]/events[at0006]/time/value as time, "+
+									    "bp/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude as Systolic_magnitude, "+
+									    "bp/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude as Diastolic_magnitude, "+
+									    "bp/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/units as Systolic_units "+
+									"from EHR e[e/ehr_id/value='" + ehrId + "']"+
+									"contains OBSERVATION bp[openEHR-EHR-OBSERVATION.blood_pressure.v1] "+
+									"where bp/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude>140 and bp/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude>85"
+									"limit 10";
+						    	$.ajax({
+								    url: baseUrl + "/query?" + $.param({"aql": AQL}),
+								    type: 'GET',
+								    headers: {"Ehr-Session": sessionId},
+								    success: function (res) {
+							    	var rows = res.resultSet;
+							    	if (rows.length != 0) {
+								    	$("#tlak").html("");
+								    	$("#tlak").append('<span class="label label-danger" id="tlak_text" style = "border-radius: 10px" ></span>');
+								    	$("#tlak_text").text("Povišan tlak");
+								    }
+								    },
+								    error: function() {
+								    	$("#tlak").html("");
+								    	$("#tlak").append('<span class="label label-default" id="tlak_text"></span>');
+								    	$("#tlak_text").text("error");
+								    }
+								});
 
-								    chart.yAxis
-								         .tickFormat(d3.format(',.2f'))
+							  nv.addGraph(function() {
+							    var chart = nv.models.multiBarHorizontalChart()
+							        .x(function(d) { return d.x })
+							        .y(function(d) { return d.y })
+							        .margin({top: 30, right: 25, bottom: 50, left: 65})
+							        .showValues(false)           //Show bar value next to each bar.
+							        .tooltips(true)             //Show tooltips on hover.
+							        .transitionDuration(350)
+							        .showControls(false);        //Allow user to switch between "Grouped" and "Stacked" mode.
 
-								    d3.select('#' + tip)
-								        .datum([{key: "Sistolični tlak", values: data1}, {key: "Diastolični tlak", values: data2}])
-								        .call(chart);
+							    chart.yAxis
+							         .tickFormat(d3.format(',.2f'))
 
-								    nv.utils.windowResize(chart.update);
+							    d3.select('#' + tip)
+							        .datum([{key: "Sistolični tlak", values: data1}, {key: "Diastolični tlak", values: data2}])
+							        .call(chart);
 
-								    return chart;
-								  });
+							    nv.utils.windowResize(chart.update);
+
+							    return chart;
+							  });
+
 						    } else if (tip == "body_temperature" && res.length > 0) {
 						    	var data = [];
 						    	for (var i = 0; i < res.length; i++) {
@@ -414,8 +481,8 @@ function preberiMeritveVitalnihZnakov(tip) {
 			$("#z1").text("Lekadol");
 			$("#z2").text("Septolete");
 			$("#z3").text("Aspirin");
-			$("#navodila1").text("");
-			$("#navodila2").text("");
+			$("#navodila1").text("Običajno krvni tlak merimo sede. Vsaj prvič ga je treba izmeriti na obeh rokah. Manjše razlike v krvnem tlaku med obema rokama so povsem normalen pojav. Ponavadi je pri desničarjih krvni tlak rahlo višji na desni roki, pri levičarjih pa na levi roki. Običajno ga merimo na tisti roki, kjer je krvni tlak višji.");
+			$("#navodila2").text("V zdravnikovi ordinaciji je normalen krvni tlak pod 140/90 mmHg. Optimalen je krvni tlak pod 120/80 mmHg, sistolične vrednosti med 130 do 139 mmHg ter diastolične vrednosti med 85 in 89 mmHg pa sodijo v kategorijo visoko normalnega krvnega tlaka. Pri meritvah krvnega tlaka doma je meja med normalnim in zvišanim krvnim tlakom nekoliko nižja, 135/85 mmHg.");
 			$("#navodila0").text("");
 			localStorage.setItem("test2", ehrId);
 
@@ -445,6 +512,9 @@ function preberiMeritveVitalnihZnakov(tip) {
 			$("#z1").text("Lekadol");
 			$("#z2").text("Ospen");
 			$("#z3").text("Aspirin");
+			$("#navodila1").text("Pred vsako fizično vadbo se je treba primerno ogreti. Od glave do gležnjev nekajkrat upognite vsak sklep (ali pa tudi zakrožite v vsako smer v njih). Dobro je ogreti tudi mišice. Priporočljivo je kakšno minuto ali dve teči (lahko tudi na mestu), počasi narediti nekaj počepov in nekaj sklec. Tako telo pripravite na prihajajoč napor in močno zmanjšate možnost poškodb.");
+			$("#navodila2").text("Vaje je treba delati v primerni obutvi in na primerni podlagi. Mehkejša podlaga je boljša, da pri skokih kolena manj trpijo in pri trebušnjakih ni toliko pritiska na trtico. Gibov ne izvajajte sunkovito ampak zvezno. Pri prednjih izpadnih korakih pazite, da ne boste šli s kolenom čez ravnino prstov na nogi, ker tako prihaja do močne obremenitve kolenskih sklepov.");
+			$("#navodila0").text("");
 			localStorage.setItem("test3", ehrId);
 
 			for (var i = 0; i < t3.teza.length; i++) {
@@ -460,5 +530,4 @@ function preberiMeritveVitalnihZnakov(tip) {
 	preberiMeritveVitalnihZnakov("blood_pressure");
 	preberiMeritveVitalnihZnakov("spO2");
 	preberiMeritveVitalnihZnakov("body_temperature");
-
 }); 
