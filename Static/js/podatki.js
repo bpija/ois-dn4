@@ -13,6 +13,7 @@ function uspesno() {
  		$("#label").html("");
 		$("#label").append('<span class="label label-warning" id="izpis" style="padding: 5px"></span>');
 		$("#izpis").text("V polje za meritev vnesite samo število opravljene meritve.");
+		return;
  	}
 
  	var datumReg = datum.match(/([0-9][0-9]\/)+[0-9]{4} [0-9]:[0-9]{2} ((PM)|(AM))/g);
