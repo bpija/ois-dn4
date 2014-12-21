@@ -16,7 +16,7 @@ function uspesno() {
 		return;
  	}
 
- 	var datumReg = datum.match(/([0-9][0-9]\/)+[0-9]{4} [0-9]:[0-9]{2} ((PM)|(AM))/g);
+ 	var datumReg = datum.match(/([0-9][0-9]\/)+[0-9]{4} [0-9]+:[0-9]{2} ((PM)|(AM))/g);
 
  	if (datumReg != datum) {
  		$("#label").html("");
